@@ -1,6 +1,7 @@
+import random
 import markdown2
 
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from . import util
 
@@ -10,9 +11,39 @@ def index(request):
         "entries": util.list_entries()
     })
 
+def search(request):
+    query_value = request.GET.get("q")
+    entries = util.list_entries()
+    print("all entries", entries)
+    print("Check the request: ", query_value)
+    similar_entries = []
+    for entry in entries:
+        print("entrada", entry)
+        if (entry.lower() == query_value.lower()):
+            return redirect('entry', entry=query_value)
+        else:
+            if (query_value.lower() in entry.lower()):
+                similar_entries.append(entry)
+        print(similar_entries)
+    return render(request, "encyclopedia/search.html", { 'similar_entries': similar_entries })
+
+def create_page(request):
+    if request.method == 'GET':
+        return render(request, "encyclopedia/create-page.html")
+    else:
+        print("Request:", request)
+
+def random_page(request):
+    entries = util.list_entries()
+    random_entry = random.choice(entries)
+    return redirect('entry', entry=random_entry)
+
 def entry(request, entry):
     print("check request:", request, entry)
-    html_text = markdown2.markdown(util.get_entry(entry))
-    return render(request, "encyclopedia/entry.html", {
-        "entry": html_text
-    })
+    try:
+        html_text = markdown2.markdown(util.get_entry(entry))
+        return render(request, "encyclopedia/entry.html", {
+            "entry": html_text
+        })
+    except:
+        return render(request, "encyclopedia/not-found.html")
