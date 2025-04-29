@@ -5,14 +5,18 @@
 {% endblock %}
 
 {% block body %}
-    <h2>Check Similar Results:</h2>
-    <ul>
-      {% for entry in similar_entries %}
-        <li>
-          <a href="{% url 'entry' entry %}">{{entry}}</a>
-        </li>
-      {% endfor %}
-    </ul>
+    {% if similar_entries %}
+      <h1>Check Similar Results:</h1>
+      <ul>
+        {% for entry in similar_entries %}
+          <li>
+            <a href="{% url 'entry' entry %}">{{entry}}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <h1>Sorry, no results found</h1>
+    {% endif %}
     
     
 {% endblock %}

@@ -17,6 +17,10 @@ textarea {
     width: 80%;
 }
 
+label {
+    display: block;
+}
+
 .main {
     padding: 10px;
 }

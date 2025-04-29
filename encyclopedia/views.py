@@ -15,17 +15,13 @@ def index(request):
 def search(request):
     query_value = request.GET.get("q")
     entries = util.list_entries()
-    print("all entries", entries)
-    print("Check the request: ", query_value)
     similar_entries = []
     for entry in entries:
-        print("entrada", entry)
         if (entry.lower() == query_value.lower()):
             return redirect('entry', entry=query_value)
         else:
             if (query_value.lower() in entry.lower()):
                 similar_entries.append(entry)
-        print(similar_entries)
     return render(request, "encyclopedia/search.html", { 'similar_entries': similar_entries })
 
 def create_page(request):
@@ -55,15 +51,10 @@ def create_page(request):
         })
     
 def edit_page(request, entry):
-    print("Entry: ", entry)
     if request.method == 'POST':
-        print("it's a post")
         form = EditPageForm(request.POST)
-        print("Form: ", form)
         if form.is_valid():
-            print("it's valid")
             page_content = form.cleaned_data["page_content"]
-            print("new content: ", page_content)
             # prevent title from being changed
             util.save_entry(entry, f"#{entry}\n{page_content}")
             return redirect('entry', entry=entry)
@@ -88,7 +79,6 @@ def random_page(request):
     return redirect('entry', entry=random_entry)
 
 def entry(request, entry):
-    print("check request:", request, entry)
     try:
         html_text = markdown2.markdown(util.get_entry(entry))
         return render(request, "encyclopedia/entry.html", {
