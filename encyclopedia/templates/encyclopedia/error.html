@@ -1,10 +1,10 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia
+    Error: {{title}}
 {% endblock %}
 
 {% block body %}
-    {{ entry|safe }}
-    <a href="">Edit Entry</a>
+    <h1>{{title}}</h1>
+    <p>{{message}}</p>
 {% endblock %}
