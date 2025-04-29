@@ -4,3 +4,5 @@ class NewPageForm(forms.Form):
     page_title = forms.CharField(label='title')
     page_content = forms.CharField(widget=forms.Textarea, label='content')
 
+class EditPageForm(forms.Form):
+    page_content = forms.CharField(widget=forms.Textarea, label='content')

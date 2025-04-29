@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    <h2>Edit Page</h2>
-    <form action="{% url 'create-page' %}" method="put">
+    <h2>Edit {{entry}} Page</h2>
+    <form action="{% url 'edit-page' entry %}" method="post">
       {% csrf_token %}
       {{ form }}
       <div>
